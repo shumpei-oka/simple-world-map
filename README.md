@@ -1,13 +1,13 @@
-# simple-map
+# simple-world-map
 
 CLI tool to generate SVG world maps from Natural Earth 110m data. Mercator projection. Zero dependencies.
 
 ## Install
 
 ```bash
-npm install -g simple-map
+npm install -g simple-world-map
 # or
-npx simple-map <region>
+npx simple-world-map <region>
 ```
 
 ## Usage
@@ -15,11 +15,11 @@ npx simple-map <region>
 ### By region
 
 ```bash
-simple-map east-asia > map.svg
-simple-map world > map.svg
+simple-world-map east-asia > map.svg
+simple-world-map world > map.svg
 
 # List available regions
-simple-map --list
+simple-world-map --list
 ```
 
 Available regions: `world`, `east-asia`, `southeast-asia`, `europe`, `north-america`, `south-america`, `africa`, `middle-east`, `oceania`
@@ -28,33 +28,45 @@ Available regions: `world`, `east-asia`, `southeast-asia`, `europe`, `north-amer
 
 ```bash
 # Center on Tokyo, 15° radius
-simple-map --center 35.68,139.69 --radius 15 > tokyo.svg
+simple-world-map --center 35.68,139.69 --radius 15 > tokyo.svg
 
 # Default radius is 20°
-simple-map --center 13.75,100.52 > bangkok.svg
+simple-world-map --center 13.75,100.52 > bangkok.svg
 ```
 
 ### Highlight countries
 
 ```bash
-# Color per country (ISO 3166-1 alpha-3)
-simple-map east-asia --hl "JPN:#ff5555,KOR:#5555ff,CHN:#55cc55" > map.svg
+# Fill per country (ISO 3166-1 alpha-3, separated by ;)
+simple-world-map east-asia --hl "JPN:#ff5555;KOR:#5555ff;CHN:#55cc55" > map.svg
+
+# Fill + stroke per country (separated by |)
+simple-world-map east-asia --hl "JPN:#ff5555|#0000ff;KOR:#5555ff" > map.svg
+
+# Fill + stroke + stroke width per country
+simple-world-map east-asia --hl "JPN:#ff5555|#0000ff|2;KOR:#5555ff" > map.svg
+
+# rgba values
+simple-world-map east-asia --hl "JPN:rgba(255,85,85,0.5)|rgba(0,0,255,0.8)" > map.svg
 
 # Omit color for default red
-simple-map east-asia --hl JPN,KOR > map.svg
+simple-world-map east-asia --hl "JPN;KOR" > map.svg
 ```
 
 ### Styling
 
 ```bash
+# Custom fill and stroke
+simple-world-map east-asia --fill "#1a1a2e" --stroke "#e94560" > map.svg
+
 # No borders
-simple-map east-asia --no-stroke > map.svg
+simple-world-map east-asia --no-stroke > map.svg
 
 # Custom stroke width (px, default 0.5)
-simple-map east-asia --sw 1 > map.svg
+simple-world-map east-asia --sw 1 > map.svg
 
 # Combine options
-simple-map east-asia --no-stroke --hl "JPN:#ff5555" > map.svg
+simple-world-map east-asia --no-stroke --hl "JPN:#ff5555" > map.svg
 ```
 
 ## Options
@@ -63,9 +75,11 @@ simple-map east-asia --no-stroke --hl "JPN:#ff5555" > map.svg
 |---|---|---|
 | `--center <lat,lon>` | | Center coordinates (latitude,longitude) |
 | `--radius <degrees>` | | View radius (default: 20) |
-| `--highlight <spec>` | `--hl` | Highlight countries (`ISO:color,...`) |
+| `--fill <color>` | | Fill color (default: #d4d4d4) |
+| `--stroke <color>` | | Stroke color (default: #333) |
 | `--stroke-width <n>` | `--sw` | Stroke width in px (default: 0.5) |
 | `--no-stroke` | | Hide country borders |
+| `--highlight <spec>` | `--hl` | Highlight countries (`ISO:fill\|stroke\|width;...`) |
 | `--list` | | List available regions |
 | `--help` | `-h` | Show help |
 

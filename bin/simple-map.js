@@ -99,15 +99,24 @@ if (fillArg != null) opts.fill = fillArg;
 const strokeArg = getArg('--stroke');
 if (strokeArg != null) opts.stroke = strokeArg;
 
-// --highlight "JPN:#ff5555;KOR:rgba(0,0,255,0.5)" or --highlight "JPN;KOR" (デフォルト色)
+// --highlight "JPN:#ff5555|#0000ff|2;KOR:#5555ff" (ISO:fill|stroke|strokeWidth)
 const hlArg = getArg('--highlight') || getArg('--hl');
 if (hlArg) {
   opts.highlight = {};
   for (const entry of hlArg.split(';')) {
-    const sepIdx = entry.indexOf(':');
-    const code = sepIdx === -1 ? entry.trim() : entry.slice(0, sepIdx).trim();
-    const color = sepIdx === -1 ? '#ff5555' : entry.slice(sepIdx + 1).trim();
-    opts.highlight[code] = color;
+    const trimmed = entry.trim();
+    const firstColon = trimmed.indexOf(':');
+    if (firstColon === -1) {
+      opts.highlight[trimmed] = { fill: '#ff5555' };
+      continue;
+    }
+    const code = trimmed.slice(0, firstColon).trim();
+    const parts = trimmed.slice(firstColon + 1).split('|');
+    const hl = {};
+    if (parts[0]) hl.fill = parts[0].trim();
+    if (parts[1]) hl.stroke = parts[1].trim();
+    if (parts[2]) hl.strokeWidth = parts[2].trim();
+    opts.highlight[code] = hl;
   }
 }
 
@@ -123,7 +132,7 @@ function printUsage() {
   console.error('  --stroke <color>         Stroke color (default: #333)');
   console.error('  --stroke-width, --sw <n> Stroke width in px (default: 0.5)');
   console.error('  --no-stroke              Hide country borders');
-  console.error('  --highlight, --hl <spec> Highlight countries (ISO:color;...)');
+  console.error('  --highlight, --hl <spec> Highlight countries (ISO:fill|stroke|width;...)');
   console.error('  --list                   List available regions');
   console.error('  --help, -h               Show help');
   console.error('');
@@ -131,7 +140,8 @@ function printUsage() {
   console.error('  simple-world-map east-asia');
   console.error('  simple-world-map east-asia --fill "#1a1a2e" --stroke "#e94560"');
   console.error('  simple-world-map east-asia --hl "JPN:#ff5555;KOR:#5555ff"');
-  console.error('  simple-world-map east-asia --hl "JPN:rgba(255,85,85,0.5);KOR:#5555ff"');
+  console.error('  simple-world-map east-asia --hl "JPN:#ff5555|#0000ff;KOR:#5555ff"');
+  console.error('  simple-world-map east-asia --hl "JPN:#ff5555|#0000ff|2;KOR:#5555ff"');
   console.error('  simple-world-map east-asia --no-stroke --hl "JPN;KOR"');
   console.error('  simple-world-map --center 35.68,139.69 --radius 15');
   console.error('');

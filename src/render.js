@@ -9,9 +9,11 @@ function renderSVG(features, viewBox, opts = {}) {
     const iso = f.properties.ISO_A3 !== '-99'
       ? f.properties.ISO_A3
       : f.properties.ISO_A3_EH;
-    const fill = highlight[iso];
-    const fillAttr = fill ? ` fill="${fill}"` : '';
-    return `  <path d="${d}" data-name="${name}" data-iso="${iso}"${fillAttr} vector-effect="non-scaling-stroke" />`;
+    const hl = highlight[iso];
+    const fillAttr = hl && hl.fill ? ` fill="${hl.fill}"` : '';
+    const strokeAttr = hl && hl.stroke ? ` stroke="${hl.stroke}"` : '';
+    const swAttr = hl && hl.strokeWidth ? ` stroke-width="${hl.strokeWidth}"` : '';
+    return `  <path d="${d}" data-name="${name}" data-iso="${iso}"${fillAttr}${strokeAttr}${swAttr} vector-effect="non-scaling-stroke" />`;
   }).join('\n');
 
   return `<svg xmlns="http://www.w3.org/2000/svg"
