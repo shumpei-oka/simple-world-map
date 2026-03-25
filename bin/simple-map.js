@@ -99,13 +99,15 @@ if (fillArg != null) opts.fill = fillArg;
 const strokeArg = getArg('--stroke');
 if (strokeArg != null) opts.stroke = strokeArg;
 
-// --highlight JPN:#ff5555,KOR:#5555ff or --highlight JPN,KOR (デフォルト色)
+// --highlight "JPN:#ff5555;KOR:rgba(0,0,255,0.5)" or --highlight "JPN;KOR" (デフォルト色)
 const hlArg = getArg('--highlight') || getArg('--hl');
 if (hlArg) {
   opts.highlight = {};
-  for (const entry of hlArg.split(',')) {
-    const [code, color] = entry.split(':');
-    opts.highlight[code] = color || '#ff5555';
+  for (const entry of hlArg.split(';')) {
+    const sepIdx = entry.indexOf(':');
+    const code = sepIdx === -1 ? entry.trim() : entry.slice(0, sepIdx).trim();
+    const color = sepIdx === -1 ? '#ff5555' : entry.slice(sepIdx + 1).trim();
+    opts.highlight[code] = color;
   }
 }
 
@@ -121,15 +123,16 @@ function printUsage() {
   console.error('  --stroke <color>         Stroke color (default: #333)');
   console.error('  --stroke-width, --sw <n> Stroke width in px (default: 0.5)');
   console.error('  --no-stroke              Hide country borders');
-  console.error('  --highlight, --hl <spec> Highlight countries (ISO:color,...)');
+  console.error('  --highlight, --hl <spec> Highlight countries (ISO:color;...)');
   console.error('  --list                   List available regions');
   console.error('  --help, -h               Show help');
   console.error('');
   console.error('Examples:');
   console.error('  simple-world-map east-asia');
   console.error('  simple-world-map east-asia --fill "#1a1a2e" --stroke "#e94560"');
-  console.error('  simple-world-map east-asia --hl "JPN:#ff5555,KOR:#5555ff"');
-  console.error('  simple-world-map east-asia --no-stroke --hl JPN,KOR');
+  console.error('  simple-world-map east-asia --hl "JPN:#ff5555;KOR:#5555ff"');
+  console.error('  simple-world-map east-asia --hl "JPN:rgba(255,85,85,0.5);KOR:#5555ff"');
+  console.error('  simple-world-map east-asia --no-stroke --hl "JPN;KOR"');
   console.error('  simple-world-map --center 35.68,139.69 --radius 15');
   console.error('');
   console.error('Regions: ' + Object.keys(REGIONS).join(', '));
