@@ -1,0 +1,20 @@
+{
+  "name": "simple-map",
+  "version": "1.0.0",
+  "description": "CLI tool to generate SVG maps by region",
+  "main": "src/render.js",
+  "bin": {
+    "simple-map": "./bin/simple-map.js"
+  },
+  "files": [
+    "bin/",
+    "src/",
+    "data/"
+  ],
+  "scripts": {
+    "test": "node bin/simple-map.js east-asia > /dev/null"
+  },
+  "keywords": ["map", "svg", "geojson", "cli"],
+  "author": "",
+  "license": "ISC"
+}
