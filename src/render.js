@@ -16,7 +16,7 @@ function renderSVG(features, viewBox, opts = {}) {
 
   return `<svg xmlns="http://www.w3.org/2000/svg"
      viewBox="${viewBox.x.toFixed(2)} ${viewBox.y.toFixed(2)} ${viewBox.width.toFixed(2)} ${viewBox.height.toFixed(2)}"
-     fill="#d4d4d4" stroke="${opts.noStroke ? 'none' : '#333'}" stroke-width="${sw}"
+     fill="${opts.fill || '#d4d4d4'}" stroke="${opts.noStroke ? 'none' : (opts.stroke || '#333')}" stroke-width="${sw}"
      fill-rule="evenodd">
 ${paths}
 </svg>

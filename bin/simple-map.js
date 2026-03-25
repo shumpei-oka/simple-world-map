@@ -94,6 +94,10 @@ const opts = {};
 const swArg = getArg('--stroke-width') || getArg('--sw');
 if (swArg != null) opts.strokeWidth = swArg;
 if (args.includes('--no-stroke')) opts.noStroke = true;
+const fillArg = getArg('--fill');
+if (fillArg != null) opts.fill = fillArg;
+const strokeArg = getArg('--stroke');
+if (strokeArg != null) opts.stroke = strokeArg;
 
 // --highlight JPN:#ff5555,KOR:#5555ff or --highlight JPN,KOR (デフォルト色)
 const hlArg = getArg('--highlight') || getArg('--hl');
