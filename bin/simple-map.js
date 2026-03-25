@@ -113,14 +113,24 @@ process.stdout.write(renderSVG(geojson.features, viewBox, opts));
 
 function printUsage() {
   console.error('Usage:');
-  console.error('  simple-map <region> [--stroke-width <n>] [--highlight <countries>]');
-  console.error('  simple-map --center <lat,lon> [--radius <degrees>] [--stroke-width <n>]');
+  console.error('  simple-world-map <region> [options]');
+  console.error('  simple-world-map --center <lat,lon> [--radius <degrees>] [options]');
+  console.error('');
+  console.error('Options:');
+  console.error('  --fill <color>           Fill color (default: #d4d4d4)');
+  console.error('  --stroke <color>         Stroke color (default: #333)');
+  console.error('  --stroke-width, --sw <n> Stroke width in px (default: 0.5)');
+  console.error('  --no-stroke              Hide country borders');
+  console.error('  --highlight, --hl <spec> Highlight countries (ISO:color,...)');
+  console.error('  --list                   List available regions');
+  console.error('  --help, -h               Show help');
   console.error('');
   console.error('Examples:');
-  console.error('  simple-map east-asia');
-  console.error('  simple-map east-asia --highlight JPN:#ff5555,KOR:#5555ff');
-  console.error('  simple-map east-asia --hl JPN,KOR  (default red)');
-  console.error('  simple-map --center 35.68,139.69 --radius 15');
+  console.error('  simple-world-map east-asia');
+  console.error('  simple-world-map east-asia --fill "#1a1a2e" --stroke "#e94560"');
+  console.error('  simple-world-map east-asia --hl "JPN:#ff5555,KOR:#5555ff"');
+  console.error('  simple-world-map east-asia --no-stroke --hl JPN,KOR');
+  console.error('  simple-world-map --center 35.68,139.69 --radius 15');
   console.error('');
   console.error('Regions: ' + Object.keys(REGIONS).join(', '));
 }

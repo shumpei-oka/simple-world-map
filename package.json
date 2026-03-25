@@ -1,6 +1,6 @@
 {
   "name": "simple-world-map",
-  "version": "1.1.0",
+  "version": "1.1.1",
   "description": "CLI tool to generate SVG maps by region",
   "main": "src/render.js",
   "bin": {
